@@ -26,6 +26,17 @@ namespace Api
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]);
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins("http://localhost:3000");
+
+                });
+            });
+
             services.AddControllers();
         }
 
@@ -40,6 +51,8 @@ namespace Api
             {
                 app.UseHttpsRedirection();
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
