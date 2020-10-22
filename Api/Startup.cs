@@ -1,3 +1,5 @@
+using Application.Activities;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,9 @@ namespace Api
 
                 });
             });
+
+            // User first assembly to register the service
+            services.AddMediatR(typeof(List.Handler).Assembly);
 
             services.AddControllers();
         }

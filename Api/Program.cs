@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistence;
+using Persistence.Migrations;
 using System;
 
 namespace Api
@@ -20,7 +21,9 @@ namespace Api
                 try
                 {
                     var context = services.GetRequiredService<DataContext>();
+
                     context.Database.Migrate();
+                    Seed.SeedData(context);
                 }
                 catch (Exception ex)
                 {
