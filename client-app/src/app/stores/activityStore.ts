@@ -59,7 +59,7 @@ class ActivityStore {
   @action editActivity = async (activity: IActivity) => {
     this.submitting = true;
     try {
-      agent.Activities.update(activity);
+      await agent.Activities.update(activity);
       runInAction('edit an activity', () => {
         this.activityRegistry.set(activity.id, activity);
         this.selectedActivity = activity;
