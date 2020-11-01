@@ -1,15 +1,36 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{5A20CF69-62AD-4B65-971F-6B2F6A1B2EB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{5A20CF69-62AD-4B65-971F-6B2F6A1B2EB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{970DDD2C-815E-40BF-8ABB-034FEDD65A9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{970DDD2C-815E-40BF-8ABB-034FEDD65A9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{8BFE6564-602F-41E2-9029-C85040F29824}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{8BFE6564-602F-41E2-9029-C85040F29824}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{A3AED834-E553-49D4-9BAB-8CB8F62FC660}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{A3AED834-E553-49D4-9BAB-8CB8F62FC660}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "client-app", "client-app\", "{88D09563-8451-460B-BFA1-38E0F6E54A64}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50163"
+		Debug.AspNetCompiler.PhysicalPath = "client-app\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50163\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50163"
+		Release.AspNetCompiler.PhysicalPath = "client-app\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50163\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "50163"
+		SlnRelativePath = "client-app\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,9 +40,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5A20CF69-62AD-4B65-971F-6B2F6A1B2EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -72,5 +90,23 @@ Global
 		{A3AED834-E553-49D4-9BAB-8CB8F62FC660}.Release|x64.Build.0 = Release|Any CPU
 		{A3AED834-E553-49D4-9BAB-8CB8F62FC660}.Release|x86.ActiveCfg = Release|Any CPU
 		{A3AED834-E553-49D4-9BAB-8CB8F62FC660}.Release|x86.Build.0 = Release|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Debug|x64.Build.0 = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Debug|x86.Build.0 = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Release|x64.ActiveCfg = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Release|x64.Build.0 = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Release|x86.ActiveCfg = Debug|Any CPU
+		{88D09563-8451-460B-BFA1-38E0F6E54A64}.Release|x86.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19643FF6-D422-40F1-874E-B841036D2C37}
 	EndGlobalSection
 EndGlobal
