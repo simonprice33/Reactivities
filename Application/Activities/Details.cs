@@ -1,4 +1,5 @@
 ﻿using Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -14,6 +15,18 @@ namespace Application.Activities
         {
             public Guid Id { get; set; }
         }
+
+        public class QueryValidator : AbstractValidator<Query>
+        {
+            private readonly DataContext _context;
+
+            public QueryValidator(DataContext contex)
+            {
+                _context = contex;
+                RuleFor(query => query.Id).NotEmpty();
+            }
+        }
+
 
         public class Handler : IRequestHandler<Query, Activity>
         {

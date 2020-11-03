@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Persistence;
 using System;
 using System.Threading;
@@ -11,6 +12,17 @@ namespace Application.Activities
         public class Command : IRequest
         {
             public Guid Id { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Delete.Command>
+        {
+            private readonly DataContext _context;
+
+            public CommandValidator(DataContext contex)
+            {
+                _context = contex;
+                RuleFor(query => query.Id).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command>

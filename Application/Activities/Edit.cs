@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Persistence;
 using System;
 using System.Threading;
@@ -23,6 +24,19 @@ namespace Application.Activities
             public string City { get; set; }
 
             public string Venue { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Edit.Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(query => query.Title).NotEmpty();
+                RuleFor(query => query.Description).NotEmpty();
+                RuleFor(query => query.Category).NotEmpty();
+                RuleFor(query => query.City).NotEmpty();
+                RuleFor(query => query.Venue).NotEmpty();
+                RuleFor(query => query.Date).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command>
