@@ -1,9 +1,11 @@
-﻿using Domain;
+﻿using Application.Errors;
+using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,6 +41,12 @@ namespace Application.Activities
             public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activities = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken).ConfigureAwait(false);
+
+                if (activities == null)
+                {
+                    throw new RestException(HttpStatusCode.NotFound, "Database record not found");
+                }
+
                 return activities;
             }
         }

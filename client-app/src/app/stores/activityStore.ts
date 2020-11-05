@@ -38,6 +38,7 @@ class ActivityStore {
     this.loadingInitial = true;
     try {
       const activities = await agent.Activities.list();
+
       runInAction('loading activities', () => {
         activities.forEach((activity) => {
           activity.date = activity.date.split('.')[0];
@@ -70,9 +71,9 @@ class ActivityStore {
       }
     } catch (error) {
       runInAction('load activity error', () => {
-        console.log(error);
         this.loadingInitial = false;
       });
+      throw error;
     }
   };
 

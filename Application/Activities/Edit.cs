@@ -1,7 +1,9 @@
-﻿using FluentValidation;
+﻿using Application.Errors;
+using FluentValidation;
 using MediatR;
 using Persistence;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -55,7 +57,7 @@ namespace Application.Activities
 
                 if (originalEntityObject == null)
                 {
-                    throw new NullReferenceException("Database Record Not Found");
+                    throw new RestException(HttpStatusCode.NotFound, "Database record not found");
                 }
 
                 originalEntityObject.Title = request.Title ?? originalEntityObject.Title;

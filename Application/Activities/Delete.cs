@@ -1,7 +1,9 @@
-﻿using FluentValidation;
+﻿using Application.Errors;
+using FluentValidation;
 using MediatR;
 using Persistence;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +42,7 @@ namespace Application.Activities
 
                 if (entityToDelete == null)
                 {
-                    throw new NullReferenceException("Database record not found");
+                    throw new RestException(HttpStatusCode.NotFound, "Database record not found");
                 }
 
                 _context.Remove(entityToDelete);
