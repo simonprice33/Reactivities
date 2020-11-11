@@ -1,4 +1,6 @@
+using Domain;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,14 +23,14 @@ namespace Api
                 try
                 {
                     var context = services.GetRequiredService<DataContext>();
-
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     context.Database.Migrate();
-                    Seed.SeedData(context);
+                    Seed.SeedData(context, userManager).Wait();
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occured during databsase migration");
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occured during migration");
                 }
             }
 
