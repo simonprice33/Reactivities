@@ -13,6 +13,7 @@ namespace Api.Controllers
     public class ActivitiesController : BaseController
     {
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<List<Activity>>> List(CancellationToken cancellationToken)
         {
             return await Mediator.Send(new List.Query(), cancellationToken);
@@ -26,6 +27,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<Unit>> Create([FromBody] Create.Command command, CancellationToken cancellationToken)
         {
             return await Mediator.Send(command, cancellationToken);
@@ -39,6 +41,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<Unit>> Delete(Guid id, CancellationToken cancellationToken)
         {
             return await Mediator.Send(new Delete.Command { Id = id }, cancellationToken);
