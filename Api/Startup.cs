@@ -1,6 +1,7 @@
 using Api.Middleware;
 using Application.Activities;
 using Application.Interfaces;
+using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
 using Infrastructure.Security;
@@ -35,6 +36,7 @@ namespace Api
 
             services.AddDbContext<DataContext>(options =>
             {
+                options.UseLazyLoadingProxies();
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]);
             });
 
@@ -51,7 +53,7 @@ namespace Api
 
             // User first assembly to register the service
             services.AddMediatR(typeof(List.Handler).Assembly);
-
+            services.AddAutoMapper(typeof(List.Handler));
 
             services.AddControllers(options =>
                 {
@@ -86,8 +88,17 @@ namespace Api
             services.AddDefaultIdentity<AppUser>()
                 .AddEntityFrameworkStores<DataContext>();
 
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsActivityHost", policy =>
+                {
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IUserAccessor, UserAccessor >();
+            services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

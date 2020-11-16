@@ -1,4 +1,6 @@
-﻿using Application.Errors;
+﻿using Application.Activities.Dtos;
+using Application.Errors;
+using AutoMapper;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -13,7 +15,7 @@ namespace Application.Activities
 {
     public class Details
     {
-        public class Query : IRequest<Activity>
+        public class Query : IRequest<ActivityDto>
         {
             public Guid Id { get; set; }
         }
@@ -30,24 +32,28 @@ namespace Application.Activities
         }
 
 
-        public class Handler : IRequestHandler<Query, Activity>
+        public class Handler : IRequestHandler<Query, ActivityDto>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IMapper _mapper;
+
+            public Handler(DataContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
-            public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ActivityDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                var activities = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken).ConfigureAwait(false);
+                var activities = await _context.Activities
+                    .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken).ConfigureAwait(false);
 
                 if (activities == null)
                 {
                     throw new RestException(HttpStatusCode.NotFound, "Database record not found");
                 }
 
-                return activities;
+                return _mapper.Map<Activity, ActivityDto>(activities);
             }
         }
     }

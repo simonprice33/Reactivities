@@ -1,5 +1,5 @@
 ﻿using Application.Activities;
-using Domain;
+using Application.Activities.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +14,14 @@ namespace Api.Controllers
     {
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult<List<Activity>>> List(CancellationToken cancellationToken)
+        public async Task<ActionResult<List<ActivityDto>>> List(CancellationToken cancellationToken)
         {
             return await Mediator.Send(new List.Query(), cancellationToken);
         }
 
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult<Activity>> Detail(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult<ActivityDto>> Detail(Guid id, CancellationToken cancellationToken)
         {
             return await Mediator.Send(new Details.Query { Id = id }, cancellationToken);
         }
@@ -34,6 +34,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "IsActivityHost")]
         public async Task<ActionResult<Unit>> Edit(Guid id, [FromBody] Edit.Command command, CancellationToken cancellationToken)
         {
             command.Id = id;
@@ -41,10 +42,24 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "IsActivityHost")]
         public async Task<ActionResult<Unit>> Delete(Guid id, CancellationToken cancellationToken)
         {
             return await Mediator.Send(new Delete.Command { Id = id }, cancellationToken);
+        }
+
+        [HttpPost("{id}/attend")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "IsActivityHost")]
+        public async Task<ActionResult<Unit>> Attend(Guid id)
+        {
+            return await Mediator.Send(new Attend.Command { Id = id }, CancellationToken.None);
+        }
+
+        [HttpDelete("{id}/attend")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<Unit>> Unattend(Guid id)
+        {
+            return await Mediator.Send(new Unattend.Command { Id = id }, CancellationToken.None);
         }
     }
 }
