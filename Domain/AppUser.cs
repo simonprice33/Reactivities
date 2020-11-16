@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -8,5 +9,7 @@ namespace Domain
         /// Gets or Sets the Display Name of the logged in user
         /// </summary>
         public string DisplayName { get; set; }
+
+        public ICollection<UserActivity> UserActivities { get; set; }
     }
 }
