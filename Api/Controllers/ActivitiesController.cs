@@ -49,7 +49,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("{id}/attend")]
-        [Authorize(AuthenticationSchemes = "Bearer", Policy = "IsActivityHost")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<Unit>> Attend(Guid id)
         {
             return await Mediator.Send(new Attend.Command { Id = id }, CancellationToken.None);

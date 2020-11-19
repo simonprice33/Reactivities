@@ -10,8 +10,6 @@ interface IProps {
 }
 
 const ActivityDetailsSideBar: React.FC<IProps> = ({ attendees }) => {
-  const isHost = false;
-  console.log(attendees);
   return (
     <Fragment>
       <Segment
