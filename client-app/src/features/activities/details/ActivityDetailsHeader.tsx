@@ -1,9 +1,11 @@
+import { Button, Header, Image, Item, Segment } from 'semantic-ui-react';
+import React, { useContext } from 'react';
+
+import { IActivity } from '../../../app/models/activity';
+import { Link } from 'react-router-dom';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 import { format } from 'date-fns';
 import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Segment, Item, Header, Button, Image } from 'semantic-ui-react';
-import { IActivity } from '../../../app/models/activity';
 
 const activityImageStyle = {
   filter: 'brightness(30%)',
@@ -18,9 +20,12 @@ const activityImageTextStyle = {
   color: 'white',
 };
 
-const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
+const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
   activity,
 }) => {
+  const host = activity.attendees.filter((x) => x.isHost)[0];
+  const rootStore = useContext(RootStoreContext);
+  const { attendActivity, cancelAttendance, loading } = rootStore.activityStore;
   return (
     <Segment.Group>
       <Segment basic attached='top' style={{ padding: '0' }}>
@@ -29,7 +34,7 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
           fluid
           style={activityImageStyle}
         />
-        <Segment basic style={activityImageTextStyle}>
+        <Segment style={activityImageTextStyle} basic>
           <Item.Group>
             <Item>
               <Item.Content>
@@ -40,7 +45,10 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
                 />
                 <p>{format(activity.date, 'eeee do MMMM')}</p>
                 <p>
-                  Hosted by <strong>Bob</strong>
+                  Hosted by{' '}
+                  <Link to={`/profile/${host.userName}`}>
+                    <strong>{host.displayName}</strong>
+                  </Link>
                 </p>
               </Item.Content>
             </Item>
@@ -48,19 +56,27 @@ const ActivityDetailsHeader: React.FC<{ activity: IActivity }> = ({
         </Segment>
       </Segment>
       <Segment clearing attached='bottom'>
-        <Button color='teal'>Join Activity</Button>
-        <Button>Cancel attendance</Button>
-        <Button
-          as={Link}
-          to={`/manage/${activity.id}`}
-          color='orange'
-          floated='right'
-        >
-          Manage Event
-        </Button>
+        {activity.isHost ? (
+          <Button
+            as={Link}
+            to={`/manage/${activity.id}`}
+            color='orange'
+            floated='right'
+          >
+            Manage Event
+          </Button>
+        ) : activity.isGoing ? (
+          <Button loading={loading} onClick={cancelAttendance}>
+            Cancel attendance
+          </Button>
+        ) : (
+          <Button loading={loading} onClick={attendActivity} color='teal'>
+            Join Activity
+          </Button>
+        )}
       </Segment>
     </Segment.Group>
   );
 };
 
-export default observer(ActivityDetailsHeader);
+export default observer(ActivityDetailedHeader);

@@ -1,3 +1,4 @@
+import { SetActivityProps, createAttendee } from '../common/util/util';
 import { SyntheticEvent, createContext } from 'react';
 import { action, computed, observable, runInAction } from 'mobx';
 
@@ -15,6 +16,7 @@ export default class ActivityStore {
   }
 
   @observable activityRegistry = new Map();
+  @observable loading = false;
   @observable loadingInitial = false;
   @observable activity: IActivity | null = null;
   @observable submitting = false;
@@ -48,7 +50,7 @@ export default class ActivityStore {
       const activities = await agent.Activities.list();
       runInAction(() => {
         activities.forEach((activity) => {
-          activity.date = new Date(activity.date);
+          SetActivityProps(activity, this.rootStore.userStore.user!);
           this.activityRegistry.set(activity.id, activity);
         });
         this.loadingInitial = false;
@@ -64,6 +66,7 @@ export default class ActivityStore {
   @action loadActivity = async (id: string) => {
     let activity = this.getActivity(id);
     if (activity) {
+      SetActivityProps(activity, this.rootStore.userStore.user!);
       this.activity = activity;
       return activity;
     } else {
@@ -150,6 +153,48 @@ export default class ActivityStore {
         this.submitting = false;
         this.target = '';
       });
+    }
+  };
+
+  @action attendActivity = async () => {
+    const attendee = createAttendee(this.rootStore.userStore.user!);
+
+    try {
+      this.loading = true;
+      await agent.Activities.attend(this.activity!.id);
+      runInAction(() => {
+        if (this.activity) {
+          this.activity.attendees.push(attendee);
+          this.activity.isGoing = true;
+          this.activityRegistry.set(this.activity.id, this.activity);
+          this.loading = false;
+        }
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.loading = false;
+      });
+      toast.error('Prolem signing up to event');
+    }
+  };
+
+  @action cancelAttendance = async () => {
+    try {
+      await agent.Activities.unattend(this.activity!.id);
+      runInAction(() => {
+        if (this.activity) {
+          this.activity.attendees = this.activity.attendees.filter(
+            (x) => x.userName !== this.rootStore.userStore.user!.username
+          );
+          this.activity.isGoing = false;
+          this.activityRegistry.set(this.activity.id, this.activity);
+        }
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.loading = false;
+      });
+      toast.error('Prolem cancelling event');
     }
   };
 }

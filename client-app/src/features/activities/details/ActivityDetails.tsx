@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react';
 import { ActivityDetailsChat } from './ActivityDetailsChat';
 import ActivityDetailsHeader from './ActivityDetailsHeader';
 import { ActivityDetailsInfo } from './ActivityDetailsInfo';
-import { ActivityDetailsSideBar } from './ActivityDetailsSideBar';
+import ActivityDetailsSideBar from './ActivityDetailsSideBar';
 import ActivityStore from '../../../app/stores/activityStore';
 import { LoadingComponent } from '../../../app/layout/LoadingComponent';
 import { RootStoreContext } from '../../../app/stores/rootStore';
@@ -37,7 +37,7 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
         <ActivityDetailsChat />
       </GridColumn>
       <GridColumn width={6}>
-        <ActivityDetailsSideBar />
+        <ActivityDetailsSideBar attendees={activity.attendees} />
       </GridColumn>
     </Grid>
   );
