@@ -19,6 +19,7 @@ import { LoginForm } from '../../features/user/LoginForm';
 import ModalContainer from '../common/modals/ModalContainer';
 import NavBar from '../../features/NavBar';
 import NotFound from './NotFound';
+import ProfilePage from '../../features/profiles/ProfilePage';
 import { RootStoreContext } from '../stores/rootStore';
 import { ToastContainer } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
@@ -57,7 +58,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   path={['/createActivity', '/manage/:id']}
                   component={ActivityForm}
                 />
-                <Route path='/login' component={LoginForm} />
+                <Route path='/profile/:username' component={ProfilePage} />
                 <Route component={NotFound} />
               </Switch>
             </Container>
